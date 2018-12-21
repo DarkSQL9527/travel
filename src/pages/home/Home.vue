@@ -1,8 +1,8 @@
 <template>
     <div>
         <home-header></home-header>
-        <home-swiper></home-swiper>
-        <home-icons></home-icons>
+        <home-swiper :swiperList="swiperList"></home-swiper>
+        <home-icons :iconList="iconList"></home-icons>
         <home-hot></home-hot>
     </div>
 </template>
@@ -21,12 +21,22 @@ export default {
     HomeIcons,
     HomeHot
   },
+  data () {
+    return {
+      iconList: [],
+      swiperList: []
+    }
+  },
   methods: {
     getHomeInfo () {
       axios.get('/api/index.json').then(this.getHomeInfoSucc)
     },
     getHomeInfoSucc (res) {
-      console.log(res)
+      if (res.data.ret && res.data.data) {
+        const homedata = res.data.data
+        this.iconList = homedata.iconList
+        this.swiperList = homedata.swiperList
+      }
     }
   },
   mounted () {
